@@ -10,35 +10,58 @@ function updateDisplay() {
 
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', () => {
-        const buttonText = button.textContent;
-
-        if (buttonText === 'AC') {
-            history = '';
-            result = '0';
-        } else if (buttonText === 'DEL') {
-            result = result.slice(0, -1) || '0';
-        } else if (buttonText === '=') {
-            try {
-                result = eval(history + result);
-                history = '';
-            } catch {
-                result = 'Error';
-            }
-        } else if (['+', '-', '*', '÷'].includes(buttonText)) {
-            if (result && !['+', '-', '*', '/'].includes(history.slice(-1))) {
-                history += result + (buttonText === '÷' ? '/' : buttonText);
-                result = '';
-            }
-        } else {
-            if (result === '0') {
-                result = buttonText;
-            } else {
-                result += buttonText;
-            }
-        }
-
-        updateDisplay();
+        handleInput(button.textContent);
     });
 });
 
+document.addEventListener('keydown', (event) => {
+    handleKeyboardInput(event.key);
+});
+
+function handleInput(input) {
+    if (input === 'AC') {
+        history = '';
+        result = '0';
+    } else if (input === 'DEL') {
+        result = result.slice(0, -1) || '0';
+    } else if (input === '=') {
+        try {
+            result = eval(history + result.replace('÷', '/').replace('x', '*'));
+            history = '';
+        } catch {
+            result = 'Error';
+        }
+    } else if (['+', '-', '*', '÷'].includes(input)) {
+        if (result && !['+', '-', '*', '/'].includes(history.slice(-1))) {
+            history += result + (input === '÷' ? '/' : input);
+            result = '';
+        }
+    } else {
+        if (result === '0') {
+            result = input;
+        } else {
+            result += input;
+        }
+    }
+
+    updateDisplay();
+}
+
+function handleKeyboardInput(key) {
+    if (key >= '0' && key <= '9') {
+        handleInput(key);
+    } else if (key === 'Enter' || key === '=') {
+        handleInput('=');
+    } else if (key === 'Backspace') {
+        handleInput('DEL');
+    } else if (key === 'Escape') {
+        handleInput('AC');
+    } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+        handleInput(key);
+    } else if (key === '.') {
+        handleInput('.');
+    }
+}
+
 updateDisplay();
+
