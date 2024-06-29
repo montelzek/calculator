@@ -3,12 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator</title>
     <link rel="stylesheet" href="style.css">
-    <title>Calculator</title>
 </head>
 <body>
-    <div id="container">
-        
+    <div class="calculator">
+        <div class="display">
+            <div id="history" class="history"></div>
+            <div id="result" class="result">0</div>
+        </div>
+        <div class="buttons">
+          <div class="row">
+            <button class="btn" id="ac">AC</button>
+            <button class="btn" id="del">DEL</button>
+            <button class="btn operator" id="divide">÷</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="1">1</button>
+            <button class="btn" id="2">2</button>
+            <button class="btn" id="3">3</button>
+            <button class="btn operator" id="multiply">x</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="4">4</button>
+            <button class="btn" id="5">5</button>
+            <button class="btn" id="6">6</button>
+            <button class="btn operator" id="add">+</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="7">7</button>
+            <button class="btn" id="8">8</button>
+            <button class="btn" id="9">9</button>
+            <button class="btn operator" id="subtract">-</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="dot">.</button>
+            <button class="btn" id="0">0</button>
+            <button class="btn" id="equals">=</button>
+          </div>    
+        </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
