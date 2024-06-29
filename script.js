@@ -26,7 +26,7 @@ function handleInput(input) {
         result = result.slice(0, -1) || '0';
     } else if (input === '=') {
         try {
-            result = eval(history + result.replace('÷', '/').replace('x', '*'));
+            result = calculate(history + result.replace('÷', '/').replace('x', '*'));
             history = '';
         } catch {
             result = 'Error';
@@ -63,5 +63,58 @@ function handleKeyboardInput(key) {
     }
 }
 
-updateDisplay();
+function calculate(expression) {
+    const tokens = expression.split(/([+\-*/])/).filter(Boolean);
+    const operators = [];
+    const values = [];
 
+    for (let token of tokens) {
+        if (isOperator(token)) {
+            while (operators.length && precedence(operators[operators.length - 1]) >= precedence(token)) {
+                processOperation(operators, values);
+            }
+            operators.push(token);
+        } else {
+            values.push(parseFloat(token));
+        }
+    }
+
+    while (operators.length) {
+        processOperation(operators, values);
+    }
+
+    return values[0];
+}
+
+function isOperator(token) {
+    return ['+', '-', '*', '/'].includes(token);
+}
+
+function precedence(operator) {
+    if (operator === '+' || operator === '-') return 1;
+    if (operator === '*' || operator === '/') return 2;
+    return 0;
+}
+
+function processOperation(operators, values) {
+    const operator = operators.pop();
+    const right = values.pop();
+    const left = values.pop();
+
+    switch (operator) {
+        case '+':
+            values.push(left + right);
+            break;
+        case '-':
+            values.push(left - right);
+            break;
+        case '*':
+            values.push(left * right);
+            break;
+        case '/':
+            values.push(left / right);
+            break;
+    }
+}
+
+updateDisplay();
